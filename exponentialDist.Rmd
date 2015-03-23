@@ -20,12 +20,14 @@ varsOfFortySamps = apply(expSamples, 1, FUN=var)
 ##Sample Mean vs. Theoretical Mean
 Let's look at the mean and standard deviation of all of our samples, represented in the graph as random variable X. As you can see below, the mean is about 5, and so is the standard deviation, so this seems to be in line with what we know about the distribution. What you will notice is that the distribution of the samples is skewed right and doesn'tlook Gaussian or symmetrical around the mean at all. All samples are positive.
 
-Now take a look at the mean of the means of 40 samples on the right, Stats-on-stats. Notice that the mean of the distribution of means of samples of size 40 is still about 5 (centered in the same place as the samples). However, the standard error is now much smaller, not even close to the mean. It's critical to remember here that this is the standard deviation of a new distribution, X'. This is the distribution of the sample means taken from samples of size 40. We know from theory that this distribution's mean and the sample mean should both be centered at the same place (around 5), and they clearly both are. The graph gets more red and the height of the histogram is larger as more samples fall at the particular location on the x axis. The green dashed lines are just marking the sample standard deviation and the standard error.
+Now take a look at the mean of the means of 40 samples on the right, Stats-on-stats. Notice that the mean of the distribution of means of samples of size 40 is still about 5 (centered in the same place as the samples). However, the standard error is now much smaller, not even close to the mean. It's critical to remember here that this is the standard deviation of a new distribution, X'. This is the distribution of the sample means taken from samples of size 40. We know from theory that this distribution's mean and the sample mean should both be centered at the same place (around 5), and they clearly both are. We also know from theory that X' distribution's variance should be the population variance divided by n. The calculation below shows both. The graph gets more red and the height of the histogram is larger as more samples fall at the particular location on the x axis. The green dashed lines are just marking the sample standard deviation and the standard error.
 ```{r means, fig.height=2, fig.width=8}
 suppressMessages(library(ggplot2)); suppressMessages(library(gridExtra))
 m0 <- mean(as.vector(expSamples)); m1 <- mean(meansOfFortySamps)
 s0 <- sd(as.vector(expSamples)); s1 <- sd(meansOfFortySamps)
 sprintf("X mean:%2.2f | X' mean:%2.2f", m0, m1)
+sprintf("Theoretical variance of X':%2.2f | Calculated variance of X':%2.2f",
+        ((1/0.2)^2)/40, var(meansOfFortySamps))
 p0 <- qplot(as.vector(expSamples), geom = "blank", xlab="X") +
    geom_line(aes(y = ..density..), stat = 'density') +  
    geom_histogram(aes(y=..density.., fill = ..density..), alpha = 0.4) +
